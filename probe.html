@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>连通测试</title>
+<style>
+:root{--paper:#F2ECE1;--card:#FFFCF6;--ink:#1C1A16;--mute:#716958;--line:#E1D7C5;--ok:#2C7A4B;--bad:#B8380F;--warn:#C98A12;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#13120F;--card:#1E1C18;--ink:#F1ECE3;--mute:#A89F90;--line:#38332B;--ok:#6CCB8F;--bad:#FF6B3D;--warn:#F0B848;color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  padding:24px 16px calc(32px + env(safe-area-inset-bottom));line-height:1.6;-webkit-text-size-adjust:100%}
+main{max-width:520px;margin:0 auto}
+h1{font-size:24px;font-weight:800}
+p{margin-top:8px;font-size:14.5px;color:var(--mute)}
+p b{color:var(--ink)}
+ol{list-style:none;padding:0;margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:16px}
+li{display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid var(--line);font-size:15px}
+li:first-child{border-top:0}
+li .n{flex:1}
+li .n small{display:block;font-size:12px;color:var(--mute)}
+li .r{font-weight:800;white-space:nowrap}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+#note{margin-top:14px;font-size:14.5px;color:var(--ink)}
+.acts{display:flex;gap:10px;margin-top:16px}
+button{font:inherit;font-size:15px;font-weight:700;padding:11px 16px;border-radius:12px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+button.main{background:var(--ink);color:var(--paper)}
+textarea{display:none;width:100%;margin-top:12px;height:150px;font-size:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px}
+</style>
+</head>
+<body>
+<main>
+  <h1>连通测试</h1>
+  <p>测一下在你的手机和网络下，几个统计服务能不能连上，用来决定活动清单用哪家统计。<b>请先关掉 VPN</b>，最好用 Wi-Fi 和手机流量各测一次。</p>
+  <p>这页不记录、也不上传任何数据；测试时，你的手机会访问下面这几个网址，就像打开普通网页一样。</p>
+  <ol id="res"></ol>
+  <div id="note"></div>
+  <div class="acts"><button class="main" id="copy" type="button">复制结果</button><button id="again" type="button">再测一次</button></div>
+  <textarea id="manual" readonly></textarea>
+</main>
+<script>
+var T = [
+  { k: "self", name: "活动清单（本站）", url: "https://kuk1song.github.io/beijing-events/", hint: "对照：这个应该能连上" },
+  { k: "google", name: "Google", url: "https://www.google.com/generate_204", hint: "对照：国内不开 VPN 时应该连不上" },
+  { k: "umami_js", name: "Umami 统计脚本", url: "https://cloud.umami.is/script.js", hint: "cloud.umami.is" },
+  { k: "umami_api", name: "Umami 上报地址", url: "https://gateway.umami.is/api/send", hint: "gateway.umami.is" },
+  { k: "baidu_js", name: "百度统计脚本", url: "https://hm.baidu.com/hm.js", hint: "hm.baidu.com" }
+];
+var R = {};
+function $(s) { return document.querySelector(s); }
+function visits() {
+  try { var n = +(localStorage.getItem("probe-visits") || 0) + 1; localStorage.setItem("probe-visits", n); return n; } catch (e) { return 0; }
+}
+var VISIT = visits();
+function one(t) {
+  var c = window.AbortController ? new AbortController() : null, t0 = Date.now(), done = false;
+  return new Promise(function (resolve) {
+    function fin(ok) { if (done) return; done = true; R[t.k] = { ok: ok, ms: Date.now() - t0 }; draw(); resolve(); }
+    setTimeout(function () { if (c) c.abort(); fin(false); }, 8000);
+    fetch(t.url + (t.url.indexOf("?") < 0 ? "?" : "&") + "probe=" + t0, { mode: "no-cors", cache: "no-store", credentials: "omit", signal: c ? c.signal : undefined })
+      .then(function () { fin(true); }, function () { fin(false); });
+  });
+}
+function draw() {
+  $("#res").innerHTML = T.map(function (t) {
+    var r = R[t.k], txt = !r ? "测试中…" : r.ok ? "能连上 · " + r.ms + " 毫秒" : (r.ms >= 7900 ? "超时" : "连不上");
+    return '<li><span class="n">' + t.name + '<small>' + t.hint + '</small></span><span class="r ' + (!r ? "" : r.ok ? "ok" : "bad") + '">' + txt + '</span></li>';
+  }).join("");
+  var g = R.google, note = "";
+  if (g && g.ok) note = '<span class="warn">Google 能连上，说明可能开着 VPN 或在境外，这次结果不能代表国内。请关掉 VPN 再测。</span>';
+  else if (Object.keys(R).length === T.length) note = "测完了。点「复制结果」，粘贴发回来就行。";
+  $("#note").innerHTML = note;
+}
+function run() { R = {}; draw(); T.forEach(one); }
+function report() {
+  var ua = navigator.userAgent, os = /iPhone|iPad/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : "其他";
+  var wx = /MicroMessenger\/([\d.]+)/.exec(ua), net = navigator.connection && navigator.connection.effectiveType;
+  var bj = new Date(Date.now() + 288e5).toISOString().slice(0, 16).replace("T", " ");
+  return ["连通测试 " + bj + "（北京时间）", os + (wx ? " 微信 " + wx[1] : " 非微信"), net ? "网络 " + net : "", "本机存储：第 " + VISIT + " 次打开"]
+    .concat(T.map(function (t) { var r = R[t.k]; return t.name + "：" + (!r ? "未完成" : r.ok ? "OK " + r.ms + "ms" : r.ms >= 7900 ? "超时" : "失败"); }))
+    .filter(Boolean).join("\n");
+}
+$("#again").onclick = run;
+$("#copy").onclick = function () {
+  var text = report(), m = $("#manual");
+  function shown() { m.value = text; m.style.display = "block"; m.focus(); m.select(); $("#copy").textContent = "长按下面的文字复制"; }
+  function fb() {
+    var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta); ok ? ($("#copy").textContent = "已复制") : shown();
+  }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { $("#copy").textContent = "已复制"; }, fb); else fb();
+};
+run();
+</script>
+</body>
+</html>
