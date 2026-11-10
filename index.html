@@ -52,6 +52,111 @@ a{color:inherit}
   border:1.5px dashed var(--ink);font-size:15px;font-weight:700}
 .draw:active{transform:scale(.98)}
 
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tt{position:relative;display:block;width:92px;height:92px;pointer-events:none;transform-origin:50% 96%}
+.tt i,.tt b{position:absolute;display:block;transition:opacity .12s ease-out}
+.tt i,.tt b{inset:0}
+.tt i{background:no-repeat 50% 100%/contain var(--still)}
+.tt b{overflow:hidden;opacity:0}
+.tt s{position:absolute;left:0;top:0;height:100%;width:1600%;background:no-repeat 0 0/100% 100% var(--strip);will-change:transform}
+.tt.turning i{opacity:0}.tt.turning b{opacity:1}
+/* ---- 通通 (2026-11-10): the draw button. A dizzy pose is drawn on a 320x360 canvas at the still's scale, feet where the still's are, with room
+   for stars. Not displayed until it is used: its box is wider than 通通, and under the crouch's scale it would widen the page */
+.tt u{position:absolute;display:none;left:-12.5%;bottom:0;width:125%;height:140.625%;background:no-repeat 50% 100%/contain var(--pose)}
+.tt.posed i,.tt.posed b{opacity:0}.tt.posed u{display:block}
+/* ---- the wave (the pictures are made by preview/通通_1108/wave_arm.py, where the five tried are compared; chosen 2026-11-10 out of five, each adding one
+   thing to the one before, the main action first). The still's arm alone turns, about its shoulder, behind the still's own die: a little the other
+   way first, three swings that get smaller, past 0 and back to settle. The body leans into it and rocks a beat behind the arm, and the eyes close in
+   a smile while it waves. 1.5 s; the first frame and the last are the still. ---- */
+.tt em{position:absolute;display:block;left:-12.5%;bottom:0;width:125%;height:140.625%;margin:0;opacity:0;background:no-repeat 50% 100%/contain;font-style:normal}
+.tt em.bod,.tt em.eye{left:0;width:100%;height:100%}
+.tt em.bod{background-image:var(--w-body)}.tt em.eye{background-image:var(--w-eyes)}
+.tt em.arm{background-image:var(--w-arm);transform-origin:29.375% 76.111%}
+.tt.waving i{visibility:hidden}.tt.waving em.arm,.tt.waving em.bod{opacity:1}
+.tt.waving{animation:wl 1.5s ease-in-out both}
+.tt.waving em.arm{animation:wb 1.5s ease-in-out both}
+.tt.waving em.eye{animation:we 1.5s linear both}
+/* the arm: a minus angle swings it out, a plus one in; past about 15 in, the hand goes behind the die */
+@keyframes wb{0%{transform:rotate(0)}8%{transform:rotate(7deg)}20%{transform:rotate(-26deg)}33%{transform:rotate(10deg)}46%{transform:rotate(-24deg)}59%{transform:rotate(8deg)}71%{transform:rotate(-16deg)}82%{transform:rotate(3deg)}91%{transform:rotate(-2deg)}100%{transform:rotate(0)}}
+/* the body, about its feet: it leans toward the arm and rocks about 100 ms behind each swing out, then settles a little past upright */
+@keyframes wl{0%{transform:rotate(0)}14%{transform:rotate(-4deg)}27%{transform:rotate(-5.5deg)}40%{transform:rotate(-3.5deg)}53%{transform:rotate(-5.5deg)}66%{transform:rotate(-3.5deg)}79%{transform:rotate(-4.5deg)}90%{transform:rotate(1deg)}100%{transform:rotate(0)}}
+/* the eyes close as the first swing starts and open as it settles */
+@keyframes we{0%,5%{opacity:0}6%,87%{opacity:1}88%,100%{opacity:0}}
+.tt.A{--still:url(data:image/webp;base64,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)}
+.tt.C{--still:url(tt/still_C.ec2ada7e7d.webp)}
+
+#drawBtn{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.hero{padding:22px 0 12px}
+.kick{align-items:center}
+.hq{margin:-12px -10px -12px auto;padding:12px 10px;font-size:0;line-height:0}
+.hq:before{content:"?";display:block;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--mute);color:var(--mute);font-size:12px;font-weight:800;line-height:17px;text-align:center;letter-spacing:0}
+.hx{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:4px;margin:6px -16px 0 0;padding-right:16px;overflow-x:clip}
+.hx h1{flex:1;min-width:0;margin:8px 0 0}
+.draw2{position:relative;isolation:isolate;flex:0 0 auto;width:96px;margin:0 -6px 0 0;display:flex;align-items:flex-end;justify-content:center;touch-action:manipulation}
+
+/* ---- the bubble: outlined, with a tail at 通通; it comes when there is something to say ---- */
+.bub,.rb{position:absolute;white-space:nowrap;pointer-events:none;background:var(--card);border:1.5px solid var(--ink);border-radius:12px;padding:5px 9px;font-size:13px;font-weight:700;line-height:1.2;color:var(--ink);opacity:0;transition:opacity .14s ease-out,transform .2s cubic-bezier(.34,1.45,.64,1),color .12s,border-color .12s}
+.bub:after,.rb:after{content:"";position:absolute;width:9px;height:9px;background:var(--card);border-right:1.5px solid var(--ink);border-top:1.5px solid var(--ink);transition:border-color .12s}
+.talk .bub{opacity:1;transform:none}
+.full .bub,.full .bub:after,.full .rb,.full .rb:after{border-color:var(--acc)}.full .bub,.full .rb{color:var(--acc)}
+.off .bub{color:var(--mute)}
+/* 抽一场 under 通通, like the name under an app icon */
+.cap{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:12px;font-weight:600;line-height:17px;color:var(--mute);pointer-events:none}
+.draw2{height:108px}.draw2 .tt{width:84px;height:84px;margin-bottom:19px}
+/* the bubble is level with the headline's first line, clear of a finger coming from below, its tail at 通通's cheek */
+.bub{right:86px;top:21px;transform:translateX(6px) scale(.92);transform-origin:100% 50%}
+.bub:after{right:-6px;top:68%;margin-top:-4.5px;transform:rotate(45deg)}
+
+/* ---- six dots above its head, above the finger ---- */
+.pips{position:absolute;left:50%;top:0;width:0;height:0;opacity:0;transition:opacity .15s;pointer-events:none}
+.pips i{position:absolute;width:7px;height:7px;margin:-3.5px;border-radius:50%;background:var(--line);transition:background .1s,transform .2s cubic-bezier(.34,1.7,.64,1)}
+.pips i.on{background:var(--ink);transform:scale(1.2)}
+.charging .pips{opacity:1}.full .pips i.on{background:var(--acc);transform:scale(1.35)}.off .pips{opacity:.3}
+
+/* ---- 换一个: three buttons of one height; 通通 stays inside its own target; while held it talks in a bubble above the finger ---- */
+#drActs{min-height:48px;align-items:center}
+.sheet #drActs>*{height:48px;line-height:45px}
+#redraw{position:relative;z-index:3;overflow:visible;display:flex;align-items:center;justify-content:center;gap:3px;padding:0 8px 0 4px;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#redraw .tt{position:relative;flex:none;width:36px;height:36px}#redraw .lb{pointer-events:none}
+#redraw.full{border-color:var(--acc);color:var(--acc)}#redraw.off .tt{opacity:.45}
+.rb{left:2px;bottom:calc(100% + 9px);padding:4px 8px;transform:translateY(5px) scale(.92);transform-origin:22px 100%}
+.rb:after{left:17px;bottom:-5.5px;transform:rotate(135deg)}
+.rb.on{opacity:1;transform:none}
+#drActs.wait{opacity:1}#drActs.wait>*:not(#redraw){opacity:.45}
+/* one height for the draw sheet: shorter cards keep the facts at the bottom */
+#dr .bc{min-height:var(--cardH,0px)}#dr .bc dl{margin-top:auto}#dr .bc .why{margin-bottom:12px}
+.how{font-size:15px;line-height:1.55}.how div{display:flex;gap:10px;padding:11px 0;border-top:1px solid var(--line)}.how div:first-child{border-top:0}
+.how dt{flex:0 0 26px;text-align:center}.how dd{flex:1;color:var(--mute)}.how b{color:var(--ink)}
+
+/* ---- 已选: 通通 walks left on the spot, frame by frame (8 poses, each shown 0.1 s); it is a button, a tap stops it and another goes on from the
+   same step (motion that goes on must be possible to stop); it cheers when the list is copied ---- */
+.pz{display:block;width:104px;height:104px;margin:0 auto 10px;background:no-repeat 50% 100%/contain var(--think)}
+.mh{position:relative}
+.wk{position:absolute;right:0;bottom:-6px;width:56px;height:56px;overflow:hidden;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.wk s{position:absolute;left:0;top:0;width:800%;height:100%;background:no-repeat 0 0/100% 100% var(--walk);animation:wk .8s steps(8,end) infinite;animation-delay:var(--wk0,0ms)}
+@keyframes wk{to{transform:translateX(-100%)}}
+.wk.stop s,.wk.away s{animation-play-state:paused}
+.wk.cheer{overflow:visible}.wk.cheer s{z-index:1;left:-8px;width:72px;background:no-repeat 0 0/200% 100% var(--cheer);animation:ch 3s step-end both}
+/* the cheer (preview/通通_1108/cheer_orig.py): the first cheering picture at the walk's size, and the pose with the arms half up for 0.1 s on the way in and out */
+@keyframes ch{0%{background-position:100% 0}3.33%{background-position:0% 0}96.7%{background-position:100% 0}100%{background-position:100% 0}}
+/* and fireworks: two bursts of sparks behind its head, each twice (left at 0.1 and 1.3 s, right at 0.5 and 1.7 s), all within the 3 s cheer.
+   Not shown before their delay (the first keyframe is a dot); box-shadows never make the page scroll; none with reduced motion */
+.wk.cheer:before,.wk.cheer:after{content:"";position:absolute;z-index:0;width:5px;height:5px;margin:-2.5px;border-radius:50%;pointer-events:none;opacity:0;animation:fw 1.2s ease-out 2 forwards;
+box-shadow:19px 0px #E0A63A,15.4px 11.2px var(--acc),5.9px 18.1px #E0A63A,-5.9px 18.1px var(--acc),-15.4px 11.2px #E0A63A,-19px 0px var(--acc),-15.4px -11.2px #E0A63A,-5.9px -18.1px var(--acc),5.9px -18.1px #E0A63A,15.4px -11.2px var(--acc),9px 2.9px var(--acc),0px 9.5px #E0A63A,-9px 2.9px var(--acc),-5.6px -7.7px #E0A63A,5.6px -7.7px var(--acc)}
+.wk.cheer:before{left:6px;top:4px;animation-delay:.1s}
+.wk.cheer:after{left:47px;top:-1px;animation-delay:.5s}
+@keyframes fw{0%{opacity:1;transform:scale(.2)}50%{opacity:1;transform:scale(.95)}68%{opacity:0;transform:scale(1)}100%{opacity:0;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.wk.cheer:before,.wk.cheer:after{display:none}}
+/* ---- 清空's undo: a bar at the top ---- */
+/* a fixed box with left:50% may only be half the screen wide unless told otherwise, so longer toasts wrapped with one character left over */
+#toast{width:max-content;max-width:calc(100vw - 32px);text-wrap:balance}
+.toast.top{top:calc(env(safe-area-inset-top,0px) + 10px);transform:translateX(-50%)}
+.toast.top{display:flex;align-items:center;white-space:nowrap;padding:0 6px 0 16px}
+.toast.top button{margin-left:6px;min-height:44px;padding:0 12px}
+@media (max-width:374px){.hx h1{font-size:30px}.hx h1 em{font-size:40px}.bub{font-size:12px;padding:4px 7px;right:64px;top:18px}
+.draw2{width:72px;height:92px;margin-right:-4px}.draw2 .tt{width:60px;height:60px;margin-bottom:17px}.cap{font-size:11px;line-height:15px}.pips{transform:scale(.74);transform-origin:0 0}}
+@media (max-width:339px){.hx h1{font-size:28px}}
+
 /* sticky filters */
 .bar{position:sticky;top:0;z-index:20;background:var(--paper);padding:8px 0 6px;margin:0 -16px;border-bottom:1px solid var(--line)}
 .row{display:flex;gap:6px;overflow-x:auto;padding:0 16px;scrollbar-width:none}
@@ -258,17 +363,16 @@ html:not(.nojs) .nj{display:none}
 <div class="view" id="v-list">
   <div class="wrap">
     <header class="hero">
-      <div class="kick"><span>BEIJING</span><span>11.02 至 11.08</span><span>11/4 核对</span></div>
-      <h1>北京近期<br>还有 <em class="num" id="total">14</em> 场活动</h1>
-      <p>AI、创业、英语角，还有好玩的。每场都附来源和核对日期，<b>⭐ 是我觉得值得去的。</b><span class="js">看中了点「想去」，在「已选」里一键复制，发给朋友约着去。</span><span class="nj">点每场右下角的按钮，打开原始页面。</span></p>
+      <div class="kick"><span>BEIJING</span><span>11.02 至 11.08</span><span>11/4 核对</span><button class="hq" id="howBtn" type="button" aria-label="怎么用"></button></div>
+      <div class="hx"><h1>北京近期<br>还有 <em class="num" id="total">6</em> 场活动</h1><button class="draw2" id="drawBtn" type="button" aria-label="不知道去哪？抽一场"><span class="bub" aria-hidden="true">抽一场？</span><span class="tt A" aria-hidden="true" data-frames="16" data-home="1"><em class="arm"></em><em class="bod"></em><i></i><b><s></s></b><em class="eye"></em><u></u></span><span class="pips" aria-hidden="true"><i style="left:-35px;top:9.5px"></i><i style="left:-21px;top:5.5px"></i><i style="left:-7px;top:3.5px"></i><i style="left:7px;top:3.5px"></i><i style="left:21px;top:5.5px"></i><i style="left:35px;top:9.5px"></i></span><span class="cap" aria-hidden="true">抽一场</span></button></div>
+      <p class="nj">点每场右下角的按钮，打开原始页面。</p>
       <p class="stale" id="stale" hidden></p>
-      <button class="draw" id="drawBtn" type="button">🎲 不知道去哪？抽一场</button>
     </header>
     <nav class="bar" aria-label="按天和类别看">
       <div class="row days" id="days"></div>
       <div class="row" id="chips" role="group" aria-label="类别，可以多选"></div>
     </nav>
-    <main id="list"><section class="grp" id="g-6"><h2>周日 11/8<span class="rel">今天</span><small class="num">7 场</small></h2><article class="tk" data-card="kea77f046"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/8</span></div><div class="ty">好玩</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>IEM Beijing 2026 CS2（季后赛 11/6 至 11/8）</h3><p class="why">国际顶级电竞赛事，11/8 下午总决赛</p><p class="meta">五棵松 · 380 至 1780 元</p><p class="note"><b>注意</b>部分票档已售罄；猫眼、UUTIX 售票</p><div class="act"><button class="like" type="button" data-like="kea77f046" aria-label="想去：IEM Beijing 2026 CS2（季后赛 11/6 至 11/8）" aria-pressed="false">♡ 想去</button><a class="go" href="https://pro.eslgaming.com/tour/cs/beijing/" data-out="kea77f046">官网 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k3137e512"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/8</span></div><div class="ty">黑客松</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag fr">免费</span><span class="tag nw">已开始</span></div><h3>JUNCTION CHINA 2026 黑客松</h3><p class="why">芬兰黑客松 Junction 的北京站，40 多小时，小米、银河通用、亮亮视野各出一条赛道</p><p class="meta">中关村国际技术交易中心 · 免费</p><p class="note"><b>注意</b>14:00 开幕，19:00 开赛，11/8 17:30 结束；官网写免费、管饭，京津冀外有交通支持；报名表现在要密码才能填，还能不能报以官网为准</p><div class="act"><button class="like" type="button" data-like="k3137e512" aria-label="想去：JUNCTION CHINA 2026 黑客松" aria-pressed="false">♡ 想去</button><a class="go" href="https://hackjunction.cn/" data-out="k3137e512">官网 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k758355e8"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/8</span></div><div class="ty">黑客松</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>AIGC 创作挑战赛 Story: ON</h3><p class="why">36 小时黑客松：AI 短片、互动游戏、商业创意三个赛道</p><p class="meta">融科资讯中心 · 未写</p><button class="xt" type="button" data-copy="11.7-8北京黑客松|AIGC创作挑战赛|丰厚奖项" data-where="小红书" data-id="k758355e8">打不开就搜：<b>「11.7-8北京黑客松|AIGC创作挑战赛|丰厚奖项」</b> <u>复制标题</u></button><div class="act"><button class="like" type="button" data-like="k758355e8" aria-label="想去：AIGC 创作挑战赛 Story: ON" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.xiaohongshu.com/discovery/item/6ae1be19000000002a038ba2?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABrLoiVsij3QDpJQIiunQcFc39ZmPgcpC7tox8PFT3MQw=&amp;xsec_source=pc_share&amp;type=normal" data-out="k758355e8">小红书 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k2eb44ab2"><div class="stub"><div class="tm num"><span class="nb">10:00</span></div><div class="ty">讲座 · AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag nw">已开始</span></div><h3>深度对话丘成桐：AI 时代的数学探索与人才培养</h3><p class="why">闭门分享，斯坦福北京校友会主办</p><p class="meta">海淀（报名后看地址） · 98 元</p><p class="note"><b>注意</b>需审核，斯坦福和清华校友优先；不退款</p><div class="act"><button class="like" type="button" data-like="k2eb44ab2" aria-label="想去：深度对话丘成桐：AI 时代的数学探索与人才培养" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.huodongxing.com/event/4885226292400" data-out="k2eb44ab2">活动行 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k4b520135"><div class="stub"><div class="tm num"><span class="nb">14:00</span></div><div class="ty">AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag nw">已开始</span><span class="tag lo">偏入门</span></div><h3>Codex 实操工作坊 第 11 期</h3><p class="why">4 小时现场实操，带着自己的问题来</p><p class="meta">朝阳（报名后看地址） · 199 元</p><div class="act"><button class="like" type="button" data-like="k4b520135" aria-label="想去：Codex 实操工作坊 第 11 期" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.huodongxing.com/event/4883414264000" data-out="k4b520135">活动行 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="ka413064d"><div class="stub"><div class="tm num"><span class="nb">14:30</span></div><div class="ty">英语</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag nw">已开始</span></div><h3>Beijing English Talkspace</h3><p class="why">英语交流小组，书店里分组聊</p><p class="meta">西城 抄手胡同 戏外书店 · 未写</p><p class="note"><b>注意</b>Eventbrite 标价约 8.8 美元；页面另写周五 19:00 也有一场</p><div class="act"><button class="like" type="button" data-like="ka413064d" aria-label="想去：Beijing English Talkspace" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.eventbrite.com/e/beijing-english-talkspace-tickets-1003188221977" data-out="ka413064d">Eventbrite ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="kd3093628"><div class="stub"><div class="tm num"><span class="nb">14:00</span></div><div class="ty">创业 · AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag cl">报名已截止</span><span class="tag lo">偏入门</span></div><h3>AI+OPC 专场 · 应用场景篇</h3><p class="why">三位分享人讲一个人或小团队怎么用 AI 接项目、做产品</p><p class="meta">朝阳 酒仙桥 · 129 至 149 元（会员免费）</p><p class="note"><b>注意</b>限 40 人；早鸟价 11/6 20:00 截止</p><div class="act"><button class="like" type="button" data-like="kd3093628" aria-label="想去：AI+OPC 专场 · 应用场景篇" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.huodongxing.com/event/1885028462400" data-out="kd3093628">活动行 ↗</a></div></div><div class="stamp">想去</div></article></section><section class="grp" id="g-7"><h2>持续进行中<small class="num">4 场</small></h2><article class="tk" data-card="k47be7ce2"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/15</span></div><div class="ty">好玩</div><div class="ck num">10/28<br>核对</div></div><div class="bd"><h3>欢乐谷 惊奇潮玩节</h3><p class="why">七个惊奇屋，20:00 夜游</p><p class="meta">朝阳 欢乐谷 · 未核实</p><div class="act"><button class="like" type="button" data-like="k47be7ce2" aria-label="想去：欢乐谷 惊奇潮玩节" aria-pressed="false">♡ 想去</button><a class="go" href="https://news.bjd.com.cn/2026/09/25/11974160.shtml" data-out="k47be7ce2">新闻 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="kf084e18c"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/15</span></div><div class="ty">演出</div><div class="ck num">10/28<br>核对</div></div><div class="bd"><h3>北京人艺国际戏剧邀请展</h3><p class="why">12 国 19 部戏</p><p class="meta">北京人艺 · 按场次</p><p class="note"><b>注意</b>具体哪天演哪部未核实</p><div class="act"><button class="like" type="button" data-like="kf084e18c" aria-label="想去：北京人艺国际戏剧邀请展" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.news.cn/ent/20260917/b27ccdac652844dbaf5ca0497ed9099f/c.html" data-out="kf084e18c">新闻 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k27bd8ee7"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">2027/</span><wbr><span class="nb">1/31</span></div><div class="ty">展览</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>UCCA 卡斯滕·霍勒「Two」</h3><p class="why">可互动的装置展</p><p class="meta">798 · 未核实</p><p class="note"><b>注意</b>周二到周日开放</p><div class="act"><button class="like" type="button" data-like="k27bd8ee7" aria-label="想去：UCCA 卡斯滕·霍勒「Two」" aria-pressed="false">♡ 想去</button><a class="go" href="https://ucca.org.cn/en/exhibition/carsten-holler/" data-out="k27bd8ee7">官网 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k5bb0d062"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">2027/</span><wbr><span class="nb">2/14</span></div><div class="ty">展览</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>中国美术馆 费欣绘画展</h3><p class="why">70 余件，周一闭馆</p><p class="meta">中国美术馆 · 120 元（优惠 60 元）</p><p class="note"><b>注意</b>需实名预约</p><div class="act"><button class="like" type="button" data-like="k5bb0d062" aria-label="想去：中国美术馆 费欣绘画展" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.bjnews.com.cn/detail/1790621583189772.html" data-out="k5bb0d062">新闻 ↗</a></div></div><div class="stamp">想去</div></article></section><section class="grp" id="g-8"><h2>即将开始<small class="num">3 场 · 11/9 起</small></h2><article class="tk" data-card="ka7a4bf36"><div class="stub"><div class="tm num s"><span class="nb">11/10</span> <span class="nb">周二</span> <span class="nb">18:00</span></div><div class="ty">讲座 · AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag dl">报名截止 11/10 周二 15:00</span></div><h3>对话斯坦福文理学院院长：AI 时代的人文与教育</h3><p class="why">斯坦福北京校友会主办，院长 Debra Satz 对谈</p><p class="meta">东城（报名后看地址） · 228 元</p><p class="note"><b>注意</b>需审核，不退款</p><div class="act"><button class="like" type="button" data-like="ka7a4bf36" aria-label="想去：对话斯坦福文理学院院长：AI 时代的人文与教育" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.huodongxing.com/event/5884548503000" data-out="ka7a4bf36">活动行 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk star" data-card="kd897bead"><div class="stub"><div class="tm num s"><span class="nb">11/14</span> <span class="nb">至</span> <span class="nb">11/16</span></div><div class="ty">黑客松</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag st">⭐ 推荐</span><span class="tag fr">免费</span><span class="tag dl">报名截止 11/10 周二</span></div><h3>怀客松：怀柔科学城 AI for Science · OPC 黑客松</h3><p class="why">48 小时，具身、OPC、AIGC 三个赛道，奖金池 10 万元</p><p class="meta">怀柔科学城 · 免费，需筛选</p><p class="note"><b>注意</b>海报写报名费 0 元、管三餐；先个人报名，入选后组队</p><button class="xt" type="button" data-copy="2026怀客松AI，来啦！来展示你的产品" data-where="小红书" data-id="kd897bead">打不开就搜：<b>「2026怀客松AI，来啦！来展示你的产品」</b> <u>复制标题</u></button><div class="act"><button class="like" type="button" data-like="kd897bead" aria-label="想去：怀客松：怀柔科学城 AI for Science · OPC 黑客松" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.xiaohongshu.com/discovery/item/6ae74ae60000000012008f4e?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABqea6-3aMX3W-0VhQfFwqF2cIVwQgEBaCxJB9VimDP1E=&amp;xsec_source=pc_share&amp;type=normal" data-out="kd897bead">小红书 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk star" data-card="k5b5a2600"><div class="stub"><div class="tm num s"><span class="nb">11/22</span> <span class="nb">周日</span> <span class="nb">09:30</span></div><div class="ty">AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag st">⭐ 推荐</span><span class="tag fr">免费</span></div><h3>DevFest Beijing 2026</h3><p class="why">GDG 北京的年度开发者大会，Gemini、智能体、Android 等议题</p><p class="meta">海淀 京仪大酒店 · 免费</p><p class="note"><b>注意</b>需提前在活动行报名，不含午餐；11/1 已报 759 人，上限 1000</p><div class="act"><button class="like" type="button" data-like="k5b5a2600" aria-label="想去：DevFest Beijing 2026" aria-pressed="false">♡ 想去</button><a class="go" href="https://gdg.community.dev/events/details/google-gdg-beijing-presents-2026-devfest-beijing/" data-out="k5b5a2600">官网 ↗</a></div></div><div class="stamp">想去</div></article></section><details class="ended"><summary>已结束 <span class="num">13</span> 场</summary><div class="er"><span class="d num">11/4</span><span class="n">Meet My Best 英文演讲俱乐部</span><a href="https://www.toastmasters.org/Find-a-Club/04832763-04832763" data-out="kbe41fb49">来源</a></div><div class="er"><span class="d num">11/4</span><span class="n">English Stand-up Comedy Open Mic</span><a href="https://www.thebeijinger.com/events/2026/sep/english-stand-comedy-open-mic" data-out="kf2f44eb5">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">人工智能+企业转型 AI 实战沙龙</span><a href="https://www.huodongxing.com/event/4884076999400" data-out="kd5d8c674">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">中关村 AI Demo Club 第 6 期</span><a href="https://www.huodongxing.com/event/9885095595900" data-out="kd64fa6e9">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">寻味明清：食物与饮食文化</span><a href="https://centerbeijing.yale.edu/zh-hans/event/%E5%AF%BB%E5%91%B3%E6%98%8E%E6%B8%85%EF%BC%9A%E9%A3%9F%E7%89%A9%E4%B8%8E%E9%A5%AE%E9%A3%9F%E6%96%87%E5%8C%96" data-out="kc375e897">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">Agentic AI 开源和标准 meetup</span><a href="https://luma.com/ej1yoq1x" data-out="kbd0797e5">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">京西 OPC 开放创新社区 · AI 生态伙伴对接会</span><a href="https://www.huodongxing.com/event/9883673247700" data-out="keb1f3482">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">Beijing 4 Seasons 英文演讲俱乐部</span><a href="https://www.toastmasters.org/Find-a-Club/07898286-07898286" data-out="k554e6a87">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">元气徒步英语角</span></div><div class="er"><span class="d num">11/7</span><span class="n">北京英语角 常规场</span></div><div class="er"><span class="d num">11/7</span><span class="n">AI 不是风口，是周期</span><a href="https://lianpu.com/event/ai-bushi-fengkou-shi-zhouqi" data-out="kce04cc33">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">WorkBuddy 和 Codex AI 办公实战营</span><a href="https://lianpu.com/event/workbuddy-codex-ai-ban-gong-shi-zhan-ying" data-out="kfeca6629">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">西北旺历史典故</span><a href="https://www.xiaohongshu.com/discovery/item/6ae61262000000001201f9c1?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABlkCW7lX--TB2SgHihexxJQqBy7QXd0xomNxFgXB61TI=&amp;xsec_source=pc_share&amp;type=normal" data-out="kf1d58687">来源</a></div></details></main>
+    <main id="list"><section class="grp" id="g-7"><h2>持续进行中<small class="num">4 场</small></h2><article class="tk" data-card="k47be7ce2"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/15</span></div><div class="ty">好玩</div><div class="ck num">10/28<br>核对</div></div><div class="bd"><h3>欢乐谷 惊奇潮玩节</h3><p class="why">七个惊奇屋，20:00 夜游</p><p class="meta">朝阳 欢乐谷 · 未核实</p><div class="act"><button class="like" type="button" data-like="k47be7ce2" aria-label="想去：欢乐谷 惊奇潮玩节" aria-pressed="false">♡ 想去</button><a class="go" href="https://news.bjd.com.cn/2026/09/25/11974160.shtml" data-out="k47be7ce2">新闻 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="kf084e18c"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">11/15</span></div><div class="ty">演出</div><div class="ck num">10/28<br>核对</div></div><div class="bd"><h3>北京人艺国际戏剧邀请展</h3><p class="why">12 国 19 部戏</p><p class="meta">北京人艺 · 按场次</p><p class="note"><b>注意</b>具体哪天演哪部未核实</p><div class="act"><button class="like" type="button" data-like="kf084e18c" aria-label="想去：北京人艺国际戏剧邀请展" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.news.cn/ent/20260917/b27ccdac652844dbaf5ca0497ed9099f/c.html" data-out="kf084e18c">新闻 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k27bd8ee7"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">2027/</span><wbr><span class="nb">1/31</span></div><div class="ty">展览</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>UCCA 卡斯滕·霍勒「Two」</h3><p class="why">可互动的装置展</p><p class="meta">798 · 未核实</p><p class="note"><b>注意</b>周二到周日开放</p><div class="act"><button class="like" type="button" data-like="k27bd8ee7" aria-label="想去：UCCA 卡斯滕·霍勒「Two」" aria-pressed="false">♡ 想去</button><a class="go" href="https://ucca.org.cn/en/exhibition/carsten-holler/" data-out="k27bd8ee7">官网 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk" data-card="k5bb0d062"><div class="stub"><div class="tm num s"><span class="nb">至</span> <span class="nb">2027/</span><wbr><span class="nb">2/14</span></div><div class="ty">展览</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><h3>中国美术馆 费欣绘画展</h3><p class="why">70 余件，周一闭馆</p><p class="meta">中国美术馆 · 120 元（优惠 60 元）</p><p class="note"><b>注意</b>需实名预约</p><div class="act"><button class="like" type="button" data-like="k5bb0d062" aria-label="想去：中国美术馆 费欣绘画展" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.bjnews.com.cn/detail/1790621583189772.html" data-out="k5bb0d062">新闻 ↗</a></div></div><div class="stamp">想去</div></article></section><section class="grp" id="g-8"><h2>即将开始<small class="num">2 场 · 11/9 起</small></h2><article class="tk star" data-card="kd897bead"><div class="stub"><div class="tm num s"><span class="nb">11/14</span> <span class="nb">至</span> <span class="nb">11/16</span></div><div class="ty">黑客松</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag st">⭐ 推荐</span><span class="tag fr">免费</span><span class="tag dl">报名截止 11/10 周二</span></div><h3>怀客松：怀柔科学城 AI for Science · OPC 黑客松</h3><p class="why">48 小时，具身、OPC、AIGC 三个赛道，奖金池 10 万元</p><p class="meta">怀柔科学城 · 免费，需筛选</p><p class="note"><b>注意</b>海报写报名费 0 元、管三餐；先个人报名，入选后组队</p><button class="xt" type="button" data-copy="2026怀客松AI，来啦！来展示你的产品" data-where="小红书" data-id="kd897bead">打不开就搜：<b>「2026怀客松AI，来啦！来展示你的产品」</b> <u>复制标题</u></button><div class="act"><button class="like" type="button" data-like="kd897bead" aria-label="想去：怀客松：怀柔科学城 AI for Science · OPC 黑客松" aria-pressed="false">♡ 想去</button><a class="go" href="https://www.xiaohongshu.com/discovery/item/6ae74ae60000000012008f4e?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABqea6-3aMX3W-0VhQfFwqF2cIVwQgEBaCxJB9VimDP1E=&amp;xsec_source=pc_share&amp;type=normal" data-out="kd897bead">小红书 ↗</a></div></div><div class="stamp">想去</div></article><article class="tk star" data-card="k5b5a2600"><div class="stub"><div class="tm num s"><span class="nb">11/22</span> <span class="nb">周日</span> <span class="nb">09:30</span></div><div class="ty">AI</div><div class="ck num">11/1<br>核对</div></div><div class="bd"><div class="tags"><span class="tag st">⭐ 推荐</span><span class="tag fr">免费</span></div><h3>DevFest Beijing 2026</h3><p class="why">GDG 北京的年度开发者大会，Gemini、智能体、Android 等议题</p><p class="meta">海淀 京仪大酒店 · 免费</p><p class="note"><b>注意</b>需提前在活动行报名，不含午餐；11/1 已报 759 人，上限 1000</p><div class="act"><button class="like" type="button" data-like="k5b5a2600" aria-label="想去：DevFest Beijing 2026" aria-pressed="false">♡ 想去</button><a class="go" href="https://gdg.community.dev/events/details/google-gdg-beijing-presents-2026-devfest-beijing/" data-out="k5b5a2600">官网 ↗</a></div></div><div class="stamp">想去</div></article></section><details class="ended"><summary>已结束 <span class="num">21</span> 场</summary><div class="er"><span class="d num">11/4</span><span class="n">Meet My Best 英文演讲俱乐部</span><a href="https://www.toastmasters.org/Find-a-Club/04832763-04832763" data-out="kbe41fb49">来源</a></div><div class="er"><span class="d num">11/4</span><span class="n">English Stand-up Comedy Open Mic</span><a href="https://www.thebeijinger.com/events/2026/sep/english-stand-comedy-open-mic" data-out="kf2f44eb5">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">人工智能+企业转型 AI 实战沙龙</span><a href="https://www.huodongxing.com/event/4884076999400" data-out="kd5d8c674">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">中关村 AI Demo Club 第 6 期</span><a href="https://www.huodongxing.com/event/9885095595900" data-out="kd64fa6e9">来源</a></div><div class="er"><span class="d num">11/5</span><span class="n">寻味明清：食物与饮食文化</span><a href="https://centerbeijing.yale.edu/zh-hans/event/%E5%AF%BB%E5%91%B3%E6%98%8E%E6%B8%85%EF%BC%9A%E9%A3%9F%E7%89%A9%E4%B8%8E%E9%A5%AE%E9%A3%9F%E6%96%87%E5%8C%96" data-out="kc375e897">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">IEM Beijing 2026 CS2（季后赛 11/6 至 11/8）</span><a href="https://pro.eslgaming.com/tour/cs/beijing/" data-out="kea77f046">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">Agentic AI 开源和标准 meetup</span><a href="https://luma.com/ej1yoq1x" data-out="kbd0797e5">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">京西 OPC 开放创新社区 · AI 生态伙伴对接会</span><a href="https://www.huodongxing.com/event/9883673247700" data-out="keb1f3482">来源</a></div><div class="er"><span class="d num">11/6</span><span class="n">JUNCTION CHINA 2026 黑客松</span><a href="https://hackjunction.cn/" data-out="k3137e512">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">AIGC 创作挑战赛 Story: ON</span><a href="https://www.xiaohongshu.com/discovery/item/6ae1be19000000002a038ba2?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABrLoiVsij3QDpJQIiunQcFc39ZmPgcpC7tox8PFT3MQw=&amp;xsec_source=pc_share&amp;type=normal" data-out="k758355e8">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">Beijing 4 Seasons 英文演讲俱乐部</span><a href="https://www.toastmasters.org/Find-a-Club/07898286-07898286" data-out="k554e6a87">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">元气徒步英语角</span></div><div class="er"><span class="d num">11/7</span><span class="n">北京英语角 常规场</span></div><div class="er"><span class="d num">11/7</span><span class="n">AI 不是风口，是周期</span><a href="https://lianpu.com/event/ai-bushi-fengkou-shi-zhouqi" data-out="kce04cc33">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">WorkBuddy 和 Codex AI 办公实战营</span><a href="https://lianpu.com/event/workbuddy-codex-ai-ban-gong-shi-zhan-ying" data-out="kfeca6629">来源</a></div><div class="er"><span class="d num">11/7</span><span class="n">西北旺历史典故</span><a href="https://www.xiaohongshu.com/discovery/item/6ae61262000000001201f9c1?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABlkCW7lX--TB2SgHihexxJQqBy7QXd0xomNxFgXB61TI=&amp;xsec_source=pc_share&amp;type=normal" data-out="kf1d58687">来源</a></div><div class="er"><span class="d num">11/8</span><span class="n">深度对话丘成桐：AI 时代的数学探索与人才培养</span><a href="https://www.huodongxing.com/event/4885226292400" data-out="k2eb44ab2">来源</a></div><div class="er"><span class="d num">11/8</span><span class="n">AI+OPC 专场 · 应用场景篇</span><a href="https://www.huodongxing.com/event/1885028462400" data-out="kd3093628">来源</a></div><div class="er"><span class="d num">11/8</span><span class="n">Codex 实操工作坊 第 11 期</span><a href="https://www.huodongxing.com/event/4883414264000" data-out="k4b520135">来源</a></div><div class="er"><span class="d num">11/8</span><span class="n">Beijing English Talkspace</span><a href="https://www.eventbrite.com/e/beijing-english-talkspace-tickets-1003188221977" data-out="ka413064d">来源</a></div><div class="er"><span class="d num">11/9 周一 09:00</span><span class="n">AI OPC 创业实战工作坊 第 2 期</span><a href="https://www.huodongxing.com/event/6884522243900" data-out="k0f86b8cf">来源</a></div></details></main>
     <footer id="foot"><h4>想看更多（别人整理的合集）</h4><a href="https://www.xiaohongshu.com/discovery/item/6ae71ca0000000002500252f?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABqea6-3aMX3W-0VhQfFwqF8f4P4vAUX242EPYnxnXmgk=&amp;xsec_source=pc_share&amp;type=normal">OnePilot：北京 AI / OPC 活动 11/3 至 11/12 ↗</a><a href="https://www.xiaohongshu.com/discovery/item/6ae1dd32000000002a01f366?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABrLoiVsij3QDpJQIiunQcFRsBqlh81Pvkg69S_ORTyUY=&amp;xsec_source=pc_share&amp;type=normal">猩动派：北京 AI 活动合集 10/29 至 11/11 ↗</a><a href="https://lianpu.com/city/beijing">联谱：北京活动列表 ↗</a><a href="https://hack123.henryht.sh/">黑123：黑客松日历 ↗</a><a href="https://www.thebeijinger.com/events/weekend">theBeijinger：英文活动日历 ↗</a></footer>
   </div>
 </div>
@@ -654,11 +758,11 @@ function clashes(items) {
 function renderMine() {
   var gs = mineGroups(), el = $("#mine");
   if (!gs.length) {
-    el.innerHTML = '<h2>已选</h2><p class="lead">还没选。去「刷一刷」右滑，或者在清单里点「想去」。</p>' +
+    el.innerHTML = '<h2>已选</h2><p class="lead">还没选。去「刷一刷」右滑，或者在清单里点「想去」。</p><i class="pz" aria-hidden="true"></i>' +
       '<div class="acts"><button class="btn pri" type="button" data-view="deck">去刷一刷</button></div>';
     return;
   }
-  var h = '<h2>已选 <span class="num">' + picked.length + '</span> 场</h2><p class="lead">点下面的按钮复制，回微信粘贴发给朋友，链接在微信里能直接点开。</p>';
+  var h = '<div class="mh"><h2>已选 <span class="num">' + picked.length + '</span> 场</h2><button class="wk" type="button" aria-label="让通通停下来"><s></s></button></div><p class="lead">点下面的按钮复制，回微信粘贴发给朋友，链接在微信里能直接点开。</p>';
   gs.forEach(function (o) {
     var c = o.g.short.indexOf("周") === 0 ? clashes(o.items.filter(live)) : {};
     h += '<div class="mg"><h3>' + esc(o.g.label) + '</h3>' + o.items.map(function (x) {
@@ -755,7 +859,7 @@ function setActs(pick, fade) {
   var a = $("#drActs");
   a.dataset.id = pick.id;
   a.innerHTML = '<button class="btn pri" type="button" data-pick="' + pick.id + '">♥ 就它了</button>' +
-    '<button class="btn" type="button" id="redraw">换一个</button>' + srcBtn(pick, "btn");
+    '<button class="btn" type="button" id="redraw"><span class="tt C" aria-hidden="true" data-frames="16" data-home="1"><i></i><b><s></s></b></span><span class="lb">换一个</span><span class="rb" aria-hidden="true"></span></button>' + srcBtn(pick, "btn");
   if (fade) play(a, [{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: "ease-out" });
 }
 function draw(again) {
@@ -1001,6 +1105,514 @@ function stale() {
   el.hidden = days <= 7;
   if (days > 7) el.textContent = "这份清单最近一次核对是 " + D.checked.slice(5).replace("-", "/").replace(/^0/, "").replace("/0", "/") + "，已经过了 " + days + " 天，有些信息可能变了，出发前请看报名页。";
 }
+/* ---------- ?fresh=1 (tests and previews) forgets what 通通 has already said, so a phone can see the first visit again: when the link is followed, not when the page
+   is reloaded or come back to, so that a reload is the next visit ---------- */
+var FOLLOWED = (function () { try { var n = performance.getEntriesByType("navigation")[0]; return n ? n.type === "navigate" : !performance.navigation || performance.navigation.type === 0; } catch (e) { return true; } })();
+if (/[?&]fresh=1\b/.test(location.search) && FOLLOWED) try { ["bj-tt-drawn", "bj-tt-tip", "bj-tt-hi", "bj-tip-like", "bj-tt-still"].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+// ?tip=1 (tests and previews): as if 通通 had been met and tapped but never held, so the opening says the tip at once
+if (/[?&]tip=1\b/.test(location.search) && FOLLOWED) try { localStorage.setItem("bj-tt-hi", "1"); localStorage.setItem("bj-tt-drawn", "1"); localStorage.removeItem("bj-tt-tip"); } catch (e) {}
+
+/* ---------- the draw sheet keeps one height for nine draws in ten: every card is measured once, out of sight, and the sheet
+   reserves the 90th percentile of the draw (no more than fits the screen), so a few very long cards do not leave a hole in
+   all the others; those few simply grow. ---------- */
+var reserve = (function () {
+  var heights = null, W = 0;
+  function measure() {
+    var w = Math.min(document.documentElement.clientWidth, 520) - 36; if (heights && w === W) return; W = w; heights = {};
+    var d = document.createElement("div"); d.className = "dr";
+    d.style.cssText = "position:absolute;left:-9999px;top:0;margin:0;visibility:hidden;--cardH:0px;width:" + w + "px";
+    d.innerHTML = ALL.map(function (x) { return '<div data-i="' + x.id + '">' + big(x, 0) + "</div>"; }).join("");
+    document.body.appendChild(d);
+    [].forEach.call(d.children, function (c) { heights[c.dataset.i] = c.offsetHeight; });
+    document.body.removeChild(d);
+  }
+  setTimeout(measure, 300);
+  return function (all) {
+    measure();
+    var h = all.map(function (x) { return heights[x.id] || 0; }).sort(function (a, b) { return a - b; });
+    $("#dr").style.setProperty("--cardH", Math.min(h[Math.ceil(h.length * 0.9) - 1], Math.round(window.innerHeight * 0.92) - 170 - Math.max(0, $("#drActs").offsetHeight - 46)) + "px");
+  };
+})();
+(function () { var od = window.draw; window.draw = function () { var p = drawPool(); reserve(p.all); return od.apply(this, arguments); }; })();
+
+/* ---------- 已选: 通通 walks. renderMine() builds it anew, so it carries on in step, and remembers having been stopped; it pauses when it is
+   off the screen. The list copied: it cheers for a moment (the first cheering picture, fitted to the walk's die and ground), by way of a pose with the
+   arms half up each way, with fireworks behind its head (the toast stays words only). ---------- */
+(function () {
+  var STILL = "bj-tt-still", io = window.IntersectionObserver && new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle("away", !e.isIntersecting); }); }), cheerT = 0;
+  function still() { try { return localStorage.getItem(STILL) === "1"; } catch (e) { return false; } }
+  function setUp() {
+    var w = $("#mine .wk"); if (!w) return;
+    w.style.setProperty("--wk0", -(performance.now() % 800).toFixed(0) + "ms");
+    if (RM) { w.tabIndex = -1; w.setAttribute("aria-hidden", "true"); w.style.pointerEvents = "none"; return; }
+    if (still()) { w.classList.add("stop"); w.setAttribute("aria-label", "让通通继续走"); }
+    if (io) { io.disconnect(); io.observe(w); }
+  }
+  var orm = window.renderMine;
+  window.renderMine = function () { orm.apply(this, arguments); setUp(); };
+  document.addEventListener("click", function (e) {
+    var w = e.target.closest && e.target.closest(".wk"); if (!w) return;
+    var stop = !w.classList.contains("stop");
+    w.classList.toggle("stop", stop); w.setAttribute("aria-label", stop ? "让通通继续走" : "让通通停下来");
+    try { localStorage.setItem(STILL, stop ? "1" : "0"); } catch (er) {}
+    if (w.animate) w.animate([{ transform: "scale(.9)" }, { transform: "scale(1)" }], { duration: 160, easing: "ease-out" });
+  });
+  var ot = window.toast;
+  window.toast = function (s, undo) {
+    ot(s, undo);
+    var w = s === "已复制，回微信粘贴发出去" && $("#mine .wk"); if (!w) return;
+    clearTimeout(cheerT); w.classList.remove("cheer"); void w.offsetWidth; w.classList.add("cheer");     // again from the top, if copied twice
+    if (w.animate && !RM) w.animate([{ transform: "translateY(0)" }, { transform: "translateY(-10px)" }, { transform: "translateY(0)" }], { duration: 420, easing: "ease-out" });
+    cheerT = setTimeout(function () { var x = $("#mine .wk"); if (x) { x.style.setProperty("--wk0", "-300ms"); x.classList.remove("cheer"); } }, 3000);      // walks on from a step with the legs together, like the pose it leaves
+  };
+})();
+
+/* ---------- once only, at the first 想去: where the list goes (the header no longer explains it) ---------- */
+(function () {
+  var K = "bj-tip-like", ot = window.toggle;
+  window.toggle = function (id, force) {
+    var was = has(id), r = ot.apply(this, arguments);
+    try { if (!was && has(id) && !force && !localStorage.getItem(K)) { localStorage.setItem(K, "1"); toast("想去的都在「已选」，一键复制发给朋友"); } } catch (e) {}
+    return r;
+  };
+})();
+
+/* ---------- 清空 can be undone: a bar at the top of the screen says how many went. It goes after 4 s (the wait stops while the pointer or the
+   focus is on it), and at once when the page is switched. ?mine=3 (tests and previews) starts on 已选 with three picked. ---------- */
+(function () {
+  var MS = 4000, n = 0, T = 0, t = $("#toast");
+  function end() { clearTimeout(T); undoFn = null; t.classList.remove("show", "act"); }       // .top stays while it fades; the next toast clears it
+  function wait() { clearTimeout(T); T = setTimeout(end, MS); }
+  function held() { return undoFn && t.classList.contains("act"); }
+  document.addEventListener("click", function (e) {
+    if (e.target.id === "clear") n = picked.length;
+    if (e.target.id === "undo") clearTimeout(T);
+  }, true);
+  ["mouseenter", "focusin"].forEach(function (k) { t.addEventListener(k, function () { if (held()) clearTimeout(T); }); });
+  ["mouseleave", "focusout"].forEach(function (k) { t.addEventListener(k, function () { if (held()) wait(); }); });
+  var ot = window.toast;
+  window.toast = function (s, undo) {
+    clearTimeout(T);
+    if (s !== "已清空" || !undo) { t.classList.remove("top"); return ot(s, undo); }
+    ot("已清空 " + n + " 场", undo);
+    clearTimeout(tt);                       // the page's own 5 s would cut across this wait
+    t.classList.add("top");
+    wait();
+  };
+  var os = window.show;
+  window.show = function (v) { if (v !== view && held()) end(); return os.apply(this, arguments); };
+  var q = location.search.match(/[?&]mine=(\d+)/);
+  if (q) window.addEventListener("load", function () { if (!picked.length) ALL.filter(function (x) { return bookable(x); }).slice(0, +q[1]).forEach(function (x) { toggle(x.id, true); }); show("mine"); });
+})();
+
+/* ---------- 怎么用 (only where the page has the ? button) ---------- */
+(function () {
+  var b = $("#howBtn"); if (!b) return;
+  b.addEventListener("click", function () {
+    drawing++; skipNow = null; stopAnims();
+    openModal(); $("#mk").textContent = "怎么用"; $("#ms").textContent = "";
+    $("#dr").style.removeProperty("--cardH");
+    $("#dr").innerHTML = '<dl class="how">' +
+      '<div><dt>⭐</dt><dd><b>推荐</b>：我觉得值得去的</dd></div>' +
+      '<div><dt>♡</dt><dd><b>想去</b>：加进「已选」，一键复制发给朋友约着去</dd></div>' +
+      '<div><dt>↗</dt><dd><b>来源</b>：每场都能打开原始页面，也写了我哪天核对的</dd></div>' +
+      '<div><dt>🎲</dt><dd><b>通通</b>：点一下帮你抽一场，按住转得更猛</dd></div></dl>';
+    $("#drActs").innerHTML = '<button class="btn pri" type="button" id="mclose">知道了</button>';
+  });
+})();
+/* ---------- 通通's pictures, files beside the page (all_web.py writes them to tt/ with a hash of their bytes in the name): set once the page has
+   loaded, so they never hold up the first paint, and fetched then, so none is missing when it is first needed ---------- */
+var TTP = {still_C: "tt/still_C.ec2ada7e7d.webp", strip_A: "tt/strip_A.4f445b8fa3.webp", strip_C: "tt/strip_C.388dfc59c9.webp", strip_walk: "tt/strip_walk.af40e1400b.webp", strip_cheer: "tt/strip_cheer.04a42b6716.webp", think: "tt/think.35d988e8e1.webp", dz2: "tt/dz2.cef1fd62b9.webp", dz3: "tt/dz3.1c0df80df8.webp", wave_body: "tt/wave_body.efed2fe55e.webp", wave_arm: "tt/wave_arm.ede3a0ee45.webp", wave_eyes: "tt/wave_eyes.94e3f843f7.webp"};
+window.addEventListener("load", function () {
+  function u(k) { return "url(" + TTP[k] + ")"; }
+  var s = document.createElement("style");
+  s.textContent = ".tt.A{--strip:" + u("strip_A") + "}.tt.C{--strip:" + u("strip_C") + "}" +
+    ".tt{--p-dz2:" + u("dz2") + ";--p-dz3:" + u("dz3") + ";--w-body:" + u("wave_body") + ";--w-arm:" + u("wave_arm") + ";--w-eyes:" + u("wave_eyes") + "}" +
+    ".wk{--walk:" + u("strip_walk") + ";--cheer:" + u("strip_cheer") + "}.pz{--think:" + u("think") + "}";
+  document.head.appendChild(s);
+  Object.keys(TTP).forEach(function (k) { if (window.Image) { var im = new Image(); im.src = TTP[k]; if (im.decode) im.decode().catch(function () {}); } });
+});
+/* ---------- 按通通. 通通 is the draw button, and a small 通通 sits on 换一个. A tap draws as before. Held, nothing is
+   drawn until you let go, and the longer the press the faster and the more cards fly (5 to 23; 3 to 20 on 换一个).
+   The big 通通: crouches, deeper the longer you hold (full at 1.5 s, where it trembles), six dots light up above its head,
+   above the finger, and it talks; let go and it jumps and spins.
+   换一个: the small 通通 turns faster the longer you hold (2 s), says so in a bubble above the finger, and the card on screen
+   draws back a little. After letting go 通通 keeps turning and slows down to stop facing front at the moment the cards stop.
+   Let go off it and nothing is drawn. The event is picked by the code when the cards start, so how you press never
+   chooses it. 通通 turns by showing one of NF views from a strip, each held, never slid; view HOME lines up with the
+   still (preview/通通_1108/slice.py), and the two cross-fade. After a strong press on the big one it is dizzy from the moment it lands until a moment after the
+   sheet is closed. ---------- */
+(function () {
+  var hero = $("#drawBtn"), bub = hero && hero.querySelector(".bub"), pips = hero ? [].slice.call(hero.querySelectorAll(".pips i")) : [];
+  if (!hero || !hero.querySelector(".tt s") || !window.PointerEvent || RM || INSTANT || !document.body.animate) return;
+  var S = 0.78, TAP = 100, SHOW = 250, SLOP = 10, OFF = 24, W0 = 0.6, W1 = 3.5;   // spin: turns a second when it starts and at the top
+  var OUT = "cubic-bezier(.5,1,.89,1)";                              // ease-out quad, 1 - (1 - u)^2: how deep a press is
+  var hp = null, sw = 0, HELD = 500;                                // a press this long shows it can be held (a quick tap on a phone often lasts past TAP)
+  function buzz(ms) { try { if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(ms); } catch (e) {} }
+  function tnow() { var t = document.timeline.currentTime; return t == null ? performance.now() : t; }
+  function fullAt(again) { return again ? 2000 : 1500; }
+  function depth(ms, again) { var u = clamp01((ms - TAP) / (fullAt(again) - TAP)); return 1 - (1 - u) * (1 - u); }
+  // what a press of ms launches: top speed (cards a second), cards the brake takes, cards. At depth 0 exactly a tap's path.
+  function plan(ms, again) {
+    var n0 = again ? 3 : 5, l0 = again ? 2 : 2.5, e = depth(ms, again), v = 6 + 10 * e, lf = l0 * (v / 6) * (v / 6);
+    return { x: e, n: Math.max(n0, Math.round(v * 0.08 + v * 0.25 * e + lf)), v: v, lf: lf };
+  }
+
+  /* ---- what 通通 says, and when. On opening the page it waves, then says one line: hello the first time, after that the time of day (once,
+     to someone who has only tapped, that it can be held); back on the list after a while away, hello. While a finger is on it, how the press is
+     going. After a strong press, that it is dizzy, together with the picture and for as long. At 就它了, that it is noted, in place of the toast.
+     Opening the sheet changes nothing here; closing it only sets when the dizzy spell ends. Left alone it waves once more, silently. A word under it (抽一场) says what it is. Never that a press makes a better pick. ---- */
+  var back = 0;
+  // lines while held, shown for equal shares of the press, so each can be read; the last says let go
+  var L = { hold: ["嘿咻…", "唔…压扁啦"], full: "松手松手！", off: "不掷啦？", re: ["转转转", "要飞啦"], reFull: "松手起飞！", reOff: "不换啦？" };
+  function told(k) { try { return !!localStorage.getItem(k); } catch (e) { return true; } }
+  function tell(k) { try { localStorage.setItem(k, "1"); } catch (e) {} }
+  var sr = document.createElement("span"); sr.className = "vh"; sr.setAttribute("role", "status"); sr.setAttribute("aria-live", "polite"); document.body.appendChild(sr);
+  function say(t) { if (bub.textContent !== t) bub.textContent = t; }
+  function hush() { hero.classList.remove("talk"); }
+  function rest(t, ms) { clearTimeout(back); sr.textContent = t; say(t); hero.classList.add("talk"); back = setTimeout(function () { if (!hp) hush(); }, ms); }
+  hush();
+
+  /* ---- a 通通: its still and strip, and animations of its own (a draw's stopAnims() must not cut them) ---- */
+  function Mascot(tt) {
+    var strip = tt.querySelector("s"), NF = +tt.dataset.frames, HOME = +tt.dataset.home, mine = [], live = null;
+    function view(k) { k = (((k + HOME) % NF) + NF) % NF; return { transform: "translateX(" + (-k * 100 / NF).toFixed(4) + "%)" }; }
+    strip.style.transform = view(0).transform;
+    function own(el, kf, o, at) { var a = el.animate(kf, o); if (at != null) try { a.startTime = at; } catch (e) {} mine.push(a); return a; }
+    function calm() { mine.forEach(function (a) { try { a.cancel(); } catch (e) {} }); mine = []; live = null; tt.classList.remove("turning", "waving", "posed"); }
+    // keyframes showing the view for th(t) turns over T ms: one key each time the view changes
+    function keys(th, T) {
+      var kf = [], lastK = null, step = 1000 / 120, t, k, o;
+      for (t = 0; t < T; t += step) { k = Math.round(th(t) * NF); if (k !== lastK) { o = view(k); o.offset = t / T; o.easing = "steps(1, end)"; kf.push(o); lastK = k; } }
+      o = view(Math.round(th(T) * NF)); o.offset = 1; kf.push(o);
+      if (kf.length < 2) { o = view(Math.round(th(T) * NF)); o.offset = 0; kf.unshift(o); }
+      return kf;
+    }
+    function sway(after) { return own(tt, [0, -5, 4.2, -3.2, 2.2, -1.2, 0].map(function (a) { return { transform: "rotate(" + a + "deg)", easing: "ease-in-out" }; }), { duration: 2200, delay: after || 0 }); }
+    function settle() { own(tt, springFrames(0.4, 0.45, 420, function (s) { return { transform: "scale(" + (1.06 - 0.06 * s).toFixed(4) + "," + (0.92 + 0.08 * s).toFixed(4) + ")" }; }), { duration: 420 }); }
+    // from angle th0 at speed w (turns a second), slow down over D ms to stop facing front on a whole turn; then(), if given, when it has
+    function home(th0, w, D, then) {
+      var stop = Math.max(Math.ceil(th0 + 0.4), Math.round(th0 + w * D / 1000 / 2.2)), d = stop - th0, p = Math.max(1.3, w * D / 1000 / d);
+      function th(t) { return th0 + d * (1 - Math.pow(1 - Math.min(1, t / D), p)); }
+      tt.classList.add("turning");
+      var a = own(strip, keys(th, D), { duration: D, fill: "forwards" });
+      live = { th: th, T0: tnow(), a: a, then: then };
+      a.onfinish = function () { if (!live || live.a !== a) return; live = null; tt.classList.remove("turning"); a.cancel(); settle(); if (then) then(); };
+    }
+    // the draw was skipped: come round to the front now
+    function hurry() { if (!live) return; var th0 = live.th(tnow() - live.T0), then = live.then; live.a.onfinish = null; live.a.cancel(); home(th0, 0.1, 280, then); }
+    return { tt: tt, strip: strip, own: own, calm: calm, keys: keys, home: home, hurry: hurry, sway: sway };
+  }
+  var big0 = Mascot(hero.querySelector(".tt"));
+  // a strong press on the big 通通: once it has landed it is dizzy, one of two pictures at random, and says so, the picture and the words together.
+  // A big wobble, then a small one over and over, for as long as the draw's sheet stays up and AFTER ms after it is closed (MIN ms in all at least,
+  // as when the sheet was closed before it landed); then the picture and the words go together and it straightens up. Behind the sheet it is only
+  // shown, not announced, as the sheet has the focus. A press on it ends it at once, and so does 就它了 (it says it is noted).
+  var MIN = 3200, AFTER = 2000, DIZZY = "呼，转晕了～", dz = null;
+  function dizzy() {
+    if (hp || big0.tt.classList.contains("turning")) return;          // a new draw has already begun
+    var tt = big0.tt;
+    tt.style.setProperty("--pose", "var(--p-" + (Math.random() < 0.5 ? "dz2" : "dz3") + ")");
+    tt.classList.add("posed");
+    dz = { t0: performance.now(), T: 0, closed: false, a: [big0.sway(420),          // once the landing's squash is over
+      big0.own(tt, [0, -2.5, 0, 2.5, 0].map(function (a) { return { transform: "rotate(" + a + "deg)", easing: "ease-in-out" }; }), { duration: 1600, delay: 2620, iterations: Infinity })] };
+    clearTimeout(back); say(DIZZY); hero.classList.add("talk");
+    if ($("#modal").hidden) { dz.closed = true; until(dz.t0 + MIN); }
+  }
+  function until(t) { clearTimeout(dz.T); dz.T = setTimeout(function () { wake(true); }, Math.max(0, t - performance.now())); }
+  new MutationObserver(function () { if (dz && !dz.closed && $("#modal").hidden) { dz.closed = true; until(Math.max(dz.t0 + MIN, performance.now() + AFTER)); } }).observe($("#modal"), { attributes: true, attributeFilter: ["hidden"] });
+  // it comes to: the picture and the words go; left to itself it straightens up from wherever the wobble has got to
+  function wake(slow) {
+    var d = dz; if (!d) return; dz = null; clearTimeout(d.T);
+    var tt = big0.tt, m = slow && getComputedStyle(tt).transform.match(/^matrix\(([^,]+),\s*([^,]+)/), ang = m ? Math.atan2(+m[2], +m[1]) * 180 / Math.PI : 0;
+    d.a.forEach(function (a) { try { a.cancel(); } catch (e) {} });
+    tt.classList.remove("posed");
+    if (Math.abs(ang) > 0.2) big0.own(tt, [{ transform: "rotate(" + ang.toFixed(2) + "deg)" }, { transform: "rotate(0deg)" }], { duration: 240, easing: "ease-out" });
+    if (bub.textContent === DIZZY) hush();
+  }
+  function crouch(e) { return "scale(" + (1.04 + 0.12 * e).toFixed(4) + "," + (0.94 - 0.18 * e).toFixed(4) + ")"; }
+  function up(M) { M.own(M.tt, [{ transform: crouch(0) }, { transform: "scale(1,1)" }], { duration: 200, easing: "ease-out" }); }
+  function relax(M, e) {
+    var x = 1.04 + 0.12 * e, y = 0.94 - 0.18 * e;
+    M.own(M.tt, springFrames(0.35, 0.3, 380, function (s) { return { transform: "scale(" + (x + (1 - x) * s).toFixed(4) + "," + (y + (1 - y) * s).toFixed(4) + ")" }; }), { duration: 380 });
+  }
+  function hop(M, e) {
+    var h = (10 + 26 * e).toFixed(1), D = Math.round(460 + 260 * e);
+    M.own(M.tt, [
+      { transform: "translateY(0) " + crouch(e), easing: "cubic-bezier(.33,1,.68,1)" },
+      { transform: "translateY(-" + h + "px) scale(.94,1.08)", offset: 0.44, easing: "cubic-bezier(.32,0,.67,0)" },
+      { transform: "translateY(0) scale(1.1,.9)", offset: 0.84, easing: "ease-out" },
+      { transform: "translateY(0) scale(1,1)" }], { duration: D });
+    setTimeout(function () { buzz(12); }, D * 0.84);
+  }
+
+  /* ---- the press ---- */
+  function outside(b, e) { var r = b.getBoundingClientRect(); return e.clientX < r.left - OFF || e.clientX > r.right + OFF || e.clientY < r.top - OFF || e.clientY > r.bottom + OFF; }
+  window.addEventListener("pointerdown", function (e) {
+    sw = 0;
+    if (hp || e.isPrimary === false || (e.pointerType === "mouse" && e.button !== 0)) return;
+    var b = e.target.closest && e.target.closest("#drawBtn,#redraw"); if (!b) return;
+    var again = b.id === "redraw", M = again ? Mascot(b.querySelector(".tt")) : big0;
+    if (!again) wake(); M.calm(); clearTimeout(back); if (!again) hush();
+    hp = { id: e.pointerId, b: b, again: again, M: M, spin: again, x0: e.clientX, y0: e.clientY, t0: performance.now(), on: false, rb: again ? b.querySelector(".rb") : null };
+    M.own(M.tt, [{ transform: "scale(1,1)" }, { transform: crouch(0) }], { duration: 90, easing: "ease-out", fill: "forwards" });
+    hp.timer = setTimeout(take, TAP);
+  }, true);
+  window.addEventListener("pointermove", function (e) {
+    if (!hp || e.pointerId !== hp.id) return;
+    if (!hp.on) { if (Math.abs(e.clientX - hp.x0) > SLOP || Math.abs(e.clientY - hp.y0) > SLOP) end(null); return; }   // a scroll: the browser's
+    hp.b.classList.toggle("off", outside(hp.b, e)); hp.say();
+  }, true);
+  function dres() { return $("#dr .slot.shown .res") || $("#dr > .bc"); }
+  function end(e) {
+    var H = hp; hp = null; if (!H) return;
+    clearTimeout(H.timer); clearTimeout(H.full); cancelAnimationFrame(H.raf);
+    var M = H.M, ms = performance.now() - H.t0;
+    if (!H.on) { M.calm(); relax(M, 0); return; }                     // a tap: the click handler draws, and 通通 follows (below)
+    sw = performance.now() + 700;                                    // the click the browser sends after this press is ours
+    var ok = !!e && e.type === "pointerup" && !outside(H.b, e), q = plan(ms, H.again), t = tnow() - H.T0;
+    var th0 = H.spin ? H.th(t) : 0, w = H.spin ? H.w(t) : 1.6 + 2.4 * q.x, s0 = 1 - (H.pull ? 0.03 * q.x : 0);
+    if (H.pull) H.pull.cancel();
+    M.calm(); H.b.classList.remove("charging", "full", "off");
+    if (H.rb) H.rb.classList.remove("on"); if (!H.again) hush();
+    if (!ok) {
+      if (H.spin) { M.home(th0, Math.max(w, 1), 700); up(M); } else relax(M, q.x);
+      if (H.pull) { var r = dres(); if (r) r.animate([{ transform: "scale(" + s0 + ")" }, { transform: "scale(1)" }], { duration: 220, easing: "ease-out" }); }
+      if (e && !H.again) rest(L.off, 1800);
+      return;
+    }
+    if (!H.again) track("抽一场");
+    track("按通通", { where: H.again ? "换一个" : "首屏", ms: Math.round(Math.min(ms, fullAt(H.again))), x: Math.round(q.x * 100) / 100, cards: q.n });
+    if (ms >= HELD) tell("bj-tt-tip");                               // someone who has held it does not need the tip
+    tell("bj-tt-drawn"); drew = true;
+    q.s0 = s0;
+    q.start = function (D) { if (H.spin) up(M); else hop(M, q.x); M.home(th0, w, D, !H.again && q.x > 0.7 ? dizzy : null); };
+    q.end = function (skipped) { if (skipped) M.hurry(); };
+    reel(H.again, q);
+  }
+  window.addEventListener("pointerup", function (e) { if (hp && e.pointerId === hp.id) end(e); }, true);
+  window.addEventListener("pointercancel", function (e) {
+    if (!hp || e.pointerId !== hp.id) return;
+    // Chrome on Android can send pointercancel right after a long-press contextmenu, even one we stopped; the finger
+    // is still down, so follow it by its touch events from here (iOS sends no contextmenu at all)
+    if (hp.on && e.pointerType === "touch" && hp.ctx && performance.now() - hp.ctx < 150) { hp.touch = true; return; }
+    end(null);
+  }, true);
+  document.addEventListener("visibilitychange", function () { if (document.hidden && hp) end(null); });
+  // the click the browser sends after a hold is ours; a real tap or Enter draws as before, and 通通 follows that draw
+  window.addEventListener("click", function (e) { if (sw && performance.now() < sw) { sw = 0; e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  window.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("#drawBtn,#redraw"); if (!b || !skipNow) return;
+    var again = b.id === "redraw", M = again ? Mascot(b.querySelector(".tt")) : big0, p = pathOf(again ? 3 : 5, 6, 160, again ? 2 : 2.5);
+    tell("bj-tt-drawn"); drew = true; if (!again) { clearTimeout(back); hush(); }
+    M.calm(); M.home(0, 1.6, p.T + (again ? 0 : 160));
+    var d = skipNow; skipNow = function (s) { d(s); if (s) M.hurry(); };
+  });
+  function follow(b) {                                               // these must be there before the finger comes down
+    b.addEventListener("touchmove", function (e) {
+      if (hp && hp.on && e.cancelable) e.preventDefault();           // once a press has taken, a drag does not scroll
+      var t = hp && hp.touch && e.touches[0]; if (t) { hp.b.classList.toggle("off", outside(hp.b, t)); hp.say(); }
+    }, { passive: false });
+    b.addEventListener("touchend", function (e) { var t = e.changedTouches && e.changedTouches[0]; if (hp && hp.touch) end(t ? { type: "pointerup", clientX: t.clientX, clientY: t.clientY } : null); });
+    b.addEventListener("touchcancel", function () { if (hp && hp.touch) end(null); });
+    b.addEventListener("contextmenu", function (e) { if (e.target.closest("#drawBtn,#redraw")) { e.preventDefault(); if (hp) hp.ctx = performance.now(); } });
+  }
+  follow(hero); follow($("#drActs"));
+
+  function take() {
+    var H = hp; if (!H) return; H.on = true; H.T0 = tnow();
+    var M = H.M, T = fullAt(H.again) - TAP, n = -1;
+    if (H.spin) {
+      // turns after t ms: the speed rises from W0 to W1 as the press deepens, then stays
+      H.w = function (t) { return W0 + (W1 - W0) * depth(t + TAP, H.again); };
+      H.th = function (t) {
+        var s = t / 1000, Ts = T / 1000, u = Math.min(1, t / T), a = W0 * Math.min(s, Ts) + (W1 - W0) * Ts * (u * u - u * u * u / 3);
+        return t <= T ? a : a + W1 * (s - Ts);
+      };
+      M.tt.classList.add("turning");
+      M.own(M.strip, M.keys(H.th, T), { duration: T, fill: "forwards" }, H.T0);
+      var k0 = H.th(T), P = 1000 / W1;
+      M.own(M.strip, M.keys(function (t) { return k0 + W1 * t / 1000; }, P), { duration: P, iterations: Infinity, delay: T }, H.T0);
+    } else {
+      H.b.classList.add("charging");
+      pips.forEach(function (p) { p.classList.remove("on"); });
+      M.own(M.tt, [{ transform: crouch(0) }, { transform: crouch(1) }], { duration: T, easing: OUT, fill: "forwards" }, H.T0);
+    }
+    // the finger is on 换一个, so the card above it answers too: it draws back a little as the press deepens
+    if (H.again) { var r = dres(); if (r) H.pull = r.animate([{ transform: "scale(1)" }, { transform: "scale(.97)" }], { duration: T, easing: OUT, fill: "forwards" }); }
+    H.say = function () {
+      var ms = performance.now() - H.t0, e = depth(ms, H.again), off = H.b.classList.contains("off"), top = ms >= fullAt(H.again);
+      if (ms >= SHOW) {
+        var lines = H.again ? L.re : L.hold, k = Math.min(lines.length - 1, Math.floor(ms / (fullAt(H.again) / lines.length))), line = off ? (H.again ? L.reOff : L.off) : top ? (H.again ? L.reFull : L.full) : lines[k];
+        if (H.rb) { if (H.rb.textContent !== line) { H.rb.textContent = line; H.rb.classList.add("on"); } }
+        else if (!H.again) { hero.classList.add("talk"); if (bub.textContent !== line) { say(line); bub.animate([{ transform: "scale(1.07)" }, { transform: "scale(1)" }], { duration: 130, easing: "ease-out" }); } }
+      }
+      if (!H.again) { var lit = Math.floor(e * 6 + 0.001); if (lit !== H.lit) { H.lit = lit; pips.forEach(function (p, j) { p.classList.toggle("on", j < lit); }); } }
+      var m = H.spin ? Math.floor(H.th(tnow() - H.T0) * 2) : Math.floor(e * 4);   // a light tick on Android
+      if (n >= 0 && m !== n) buzz(4); n = m;
+    };
+    (function loop() { if (hp !== H) return; H.say(); H.raf = requestAnimationFrame(loop); })();
+    H.full = setTimeout(function () {
+      if (hp !== H) return; H.b.classList.add("full"); buzz(12);
+      if (H.spin) return;
+      var p = crouch(1), j = function (x) { return { transform: "translateX(" + x + "px) " + p }; };
+      M.own(M.tt, [j(0), j(-0.9), j(0.7), j(-0.5), j(0)], { duration: 150, iterations: Infinity });    // held all the way down
+    }, T);
+  }
+  /* ---- the wave (wave.css): the arm of the still turns about its shoulder, the body leans into it and the eyes smile. The first time 通通 can be
+     seen in a visit (0.7 s after the page has loaded, or when you first come to the list) it waves and then says one line. Back on the list after
+     BACK ms or more away (in another app or tab, or on 刷一刷 or 已选), it waves and says hello (or the tip, if it is due). Left alone for 20 s, once more, in silence, unless
+     something has been drawn on this visit. Never while a sheet is up, while it is dizzy, talking or waving, or when it is off the screen. 1.5 s,
+     so it needs no way to stop it. For tests and previews only: ?idle=ms shortens the wait, ?greet=0 leaves out the greetings. ---- */
+  var Q = location.search.match(/[?&]idle=(\d+)/), OPEN = 700, IDLE_MS = Q ? +Q[1] : 20000, BACK = 5000, WT = 1500, NOGREET = /[?&]greet=0\b/.test(location.search);
+  var drew = false, waved = false, greeted = false, acted = performance.now(), wt = 0, away = 0;
+  function inView() { var r = big0.tt.getBoundingClientRect(); return r.height > 0 && r.bottom > 0 && r.top < window.innerHeight; }
+  function free() { var c = big0.tt.classList; return !hp && $("#modal").hidden && !document.hidden && inView() && !hero.classList.contains("talk") && !c.contains("posed") && !c.contains("waving"); }
+  // once, at the next greeting after someone has drawn without holding it, that it can be held: on opening the page or coming back to the list.
+  // It comes before the name, as someone who has drawn already knows 通通 (and a press during the first wave would cut the name off)
+  function tip() { if (!told("bj-tt-drawn") || told("bj-tt-tip")) return null; tell("bj-tt-tip"); tell("bj-tt-hi"); return "按住我，转更猛哦～"; }
+  // on opening: the tip if it is due; else its name the first time; after that the time of day in Beijing
+  function line() {
+    var t = tip(); if (t) return t;
+    if (!told("bj-tt-hi")) { tell("bj-tt-hi"); return "嗨，我是通通～"; }
+    var h = +NOW.t.slice(0, 2);
+    return h < 5 || h >= 23 ? "还没睡呀～" : h < 11 ? "早呀～" : h < 13 ? "中午好～" : h < 18 ? "下午好～" : "晚上好～";
+  }
+  function hello() { return tip() || "嗨～"; }
+  // words(): what to say once the wave is over, or nothing
+  function wave(words) {
+    var tt = big0.tt;
+    tt.classList.remove("waving"); void tt.offsetWidth; tt.classList.add("waving");
+    setTimeout(function () {
+      if (!tt.classList.contains("waving")) return;                  // a press ended it
+      tt.classList.remove("waving");
+      if (words && !hp && $("#modal").hidden) { say(words()); hero.classList.add("talk"); clearTimeout(back); back = setTimeout(function () { if (!hp) hush(); }, 3000); }
+    }, WT);
+  }
+  function greet() { if (NOGREET || !free()) return; var first = !greeted; greeted = true; wave(first ? line : hello); }
+  function armIdle() { clearTimeout(wt); if (!waved && !drew) wt = setTimeout(idle, Math.max(50, acted + IDLE_MS - performance.now())); }
+  function idle() {
+    if (waved || drew) return;
+    if (acted + IDLE_MS - performance.now() > 30) return armIdle();
+    if (!free()) { acted = performance.now(); return armIdle(); }
+    waved = true; wave(null);
+  }
+  // away from the list since when: hidden in another app or tab, or on another page of this one. Back on it, a greeting after BACK ms or more
+  // away, or the opening one if there has not been one yet
+  function leave() { if (!away) away = performance.now(); }
+  function come() {
+    var t = away; away = 0;
+    if (greeted && (!t || performance.now() - t < BACK)) return;
+    setTimeout(function () { if (view === "list") greet(); acted = performance.now(); }, OPEN);
+  }
+  document.addEventListener("visibilitychange", function () { if (view === "list") { if (document.hidden) leave(); else come(); } });
+  var os0 = window.show;
+  window.show = function (v) {
+    var was = view, r = os0.apply(this, arguments);
+    if (was === "list" && view !== "list") leave(); else if (was !== "list" && view === "list" && !document.hidden) come();
+    return r;
+  };
+  // 就它了: 通通 says it is noted, and the toast, a second voice saying the same, is left out; this one is announced, as the toast would be
+  var ot0 = window.toast;
+  window.toast = function (s, undo) { if (s === "已加进清单" && !hp && inView()) { wake(); rest("记下啦～", 3000); return; } return ot0(s, undo); };
+  ["pointerdown", "keydown", "scroll"].forEach(function (k) { window.addEventListener(k, function () { acted = performance.now(); }, { passive: true, capture: true }); });
+  function opened() { setTimeout(function () { if (!drew) greet(); acted = performance.now(); armIdle(); }, OPEN); }
+  if (document.readyState === "complete") opened(); else window.addEventListener("load", opened);    // the pictures are added on load
+
+  /* ---- the draw: as draw(), except the path comes from the press, and a card is made only when it comes near the middle ---- */
+  function reel(again, q) {
+    var p = drawPool(), pool = p.pool;
+    if (!pool.length || p.all.length < 2) { draw(again); return; }
+    reserve(p.all);
+    var pick = pool[Math.floor(Math.random() * pool.length)], token = ++drawing, finished = false, hHold = 0, prev = lastPick;
+    seen.push(pick.id); draws++;
+    stopAnims();
+    var old = !!(again && $("#dr .bc") && !$("#modal").hidden);
+    openModal(); $("#mk").textContent = "帮你抽一场";
+    if (!old) $("#drActs").innerHTML = "";
+    $("#ms").textContent = "从「" + scope() + "」" + p.all.length + " 场里抽" + (draws > 1 ? " · 第 " + draws + " 次" : "");
+    function later(f, ms) { setTimeout(function () { if (token === drawing && !finished) f(); }, ms); }
+    function done(skipped) {
+      if (token !== drawing || finished) return;
+      finished = true; skipNow = null; stopAnims(); lastPick = pick;
+      $("#drActs").classList.remove("wait");
+      st.slot.classList.add("shown"); if (st.fx.parentNode) st.fx.parentNode.removeChild(st.fx); if (hHold) settleHeight();
+      if (skipped) play(st.res, [{ opacity: 0.35 }, { opacity: 1 }], { duration: 100, easing: "ease-out" });
+      if ($("#drActs").dataset.id !== pick.id || !$("#drActs").children.length) setActs(pick, true);
+      var h = $("#dr h3");
+      if (h) { h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e) {} }
+      q.end(skipped);
+    }
+    skipNow = done;
+    var h0 = $("#dr").offsetHeight, st = stage(pick);
+    if (old) {
+      $("#drActs").classList.add("wait");
+      var h1 = $("#dr").offsetHeight;
+      if (h1 > h0) play($("#dr"), [{ height: h0 + "px" }, { height: h1 + "px" }], { duration: 280, easing: "cubic-bezier(.33,1,.68,1)" });
+      else if (h1 < h0) { hHold = h0 - h1; st.slot.style.height = (st.slot.offsetHeight + hHold) + "px"; }
+    }
+    function settleHeight() {
+      if (!hHold) return 0;
+      var a = st.slot.offsetHeight, b = st.res.offsetHeight;
+      st.slot.style.height = ""; hHold = 0;
+      play(st.slot, [{ height: a + "px" }, { height: b + "px" }], { duration: 280, easing: "cubic-bezier(.33,1,.68,1)" });
+      return 280;
+    }
+    st.fx.innerHTML = '<div class="cf"></div>';
+    var cf = st.fx.firstChild, els = {}, N = q.n, TK = 2 * tok("--tint-k", 0.05), s0 = q.s0;
+    var others = shuffled(p.all.filter(function (x) { return x !== pick && x !== prev; }));
+    if (!others.length) others = p.all.filter(function (x) { return x !== pick; });
+    function el(k) {
+      if (els[k]) return els[k];
+      var x = k === N ? pick : old && k === 0 && prev ? prev : others[k % others.length];
+      var d = document.createElement("div"); d.className = "sc"; d.innerHTML = big(x, 0) + '<i class="tint"></i>';
+      cf.appendChild(d); els[k] = d; return d;
+    }
+    // the same look as draw(); on 换一个 the card on screen shrinks into the row, from where the press left it
+    function look(k, P) {
+      var d = k - P, a = Math.abs(d), r = Math.max(-1, Math.min(1, d)), sc = old && k === 0 ? S + (s0 - S) * clamp01(1 - P / 0.6) : S;
+      var op = (a < 2.2 ? 1 : Math.max(0, (3 - a) / 0.8)) * (old && k ? clamp01(P / 0.5) : 1);
+      return { transform: "translateX(" + (Math.max(-3.5, Math.min(3.5, d)) * 52).toFixed(2) + "%) translateZ(" + (-Math.min(a, 3) * 80).toFixed(1) + "px) rotateY(" + (-r * 35).toFixed(2) + "deg) scale(" + sc.toFixed(4) + ")", opacity: op.toFixed(3) };
+    }
+    function tint(k, P) { return { opacity: (TK * Math.min(Math.abs(k - P), 3)).toFixed(3) }; }
+    // keyframes pinned to the document clock, as draw() does; a card is made, and its animation started, just before it
+    // comes in; the path only moves forward, so card k moves only while P is within 3.5 of it
+    var path = pathOf(N, q.v, 160, q.lf), lead = old ? 0 : 160, T0 = tnow(), step = 1000 / 60, steps = Math.ceil(path.T / step), k;
+    q.start(lead + path.T);
+    function at(i) { return path.at(Math.min(path.T, i * step)); }
+    function idx(v) { if (at(0) >= v) return 0; if (at(steps) < v) return steps + 1; var a = 0, b = steps; while (a < b) { var m = (a + b) >> 1; if (at(m) >= v) b = m; else a = m + 1; } return a; }
+    function keys(k, style) {
+      var first = Math.max(0, idx(k - 3.5) - 1), lastI = Math.min(steps, idx(k + 3.5)), seq = [];
+      if (first >= lastI) return { seq: [style(at(first > steps ? 0 : first))], first: -1 };
+      for (var i = first; i <= lastI; i++) seq.push(style(at(i)));
+      return { seq: seq, first: first, last: lastI };
+    }
+    function anim(e, q) {
+      for (var z in q.seq[0]) e.style[z] = q.seq[0][z];
+      if (q.first < 0) return;
+      var kf = q.seq.map(function (o, j, arr) { var c = {}; for (var z in o) c[z] = o[z]; c.offset = j / (arr.length - 1); return c; });
+      var a = play(e, kf, { duration: (q.last - q.first) * step, fill: "both" });
+      if (a) try { a.startTime = T0 + lead + q.first * step; } catch (er) {}
+    }
+    for (k = 0; k <= N + 2; k++) (function (k) {
+      var q = keys(k, function (P) { return look(k, P); });
+      if (q.first < 0) return;                                         // never near the middle
+      function go() { var e = el(k); anim(e, q); anim(e.lastChild, keys(k, function (P) { return tint(k, P); })); }
+      if (lead + q.first * step < 120) go(); else later(go, lead + q.first * step - 100);
+    })(k);
+    var lastTick = -1e9;                                               // a light tick on Android as each card passes
+    for (var t = step; t < path.T; t += step) if (Math.round(path.at(t)) !== Math.round(path.at(t - step)) && t - lastTick >= 70) { lastTick = t; later(function () { buzz(4); }, lead + t); }
+    later(function () {
+      var mid = el(N);
+      play(mid, springFrames(0.5, 0.1, 420, function (q) { return { transform: "translateX(0%) translateZ(0px) rotateY(0deg) scale(" + (S + (1 - S) * q).toFixed(4) + ")" }; }), { duration: 420, fill: "forwards" });
+      for (var k in els) if (+k !== N) play(els[k], [{ opacity: getComputedStyle(els[k]).opacity }, { opacity: 0 }], { duration: 220, easing: "ease-out", fill: "forwards" });
+      later(function () { buzz(12); }, 60);
+      later(function () { $("#drActs").classList.remove("wait"); setActs(pick, true); }, 200);
+      later(function () { later(done, settleHeight()); }, 440);
+    }, lead + path.T - 120);
+  }
+})();
+
 foot(); count(); stale(); startStats();
 if (STATQ) toast(STATQ[1] === "off" ? "这个浏览器以后不再统计（?stats=on 恢复）" : "这个浏览器恢复统计");
 (function () {
